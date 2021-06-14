@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "751404508787",
+    "project_id": "skin-tone-detection",
+    "storage_bucket": "skin-tone-detection.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:751404508787:android:2e8df0e3832a5a24aaac06",
+        "android_client_info": {
+          "package_name": "com.example.skin_detection"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "751404508787-rad4obdkaps0hfogi9l6dgdgce718k2n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCi3CLio_3d5sfZVe9LbF6iFZqBJGZCigw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "751404508787-rad4obdkaps0hfogi9l6dgdgce718k2n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
