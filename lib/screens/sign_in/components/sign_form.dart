@@ -169,25 +169,25 @@ class _SignFormState extends State<SignForm> {
 
 
   _signIn() async {
-    // setState(() {
-    //   _isLoading = true;
-    // });
-    //
-    // APIResponse result =
-    //     await authenticationService.signInWithEmail(email, password);
-    //
-    // setState(() {
-    //   _isLoading = false;
-    // });
-    //
-    // if (!result.error) {
-    //   await showToast("Login successful");
+    setState(() {
+      _isLoading = true;
+    });
+
+    APIResponse result =
+        await authenticationService.signInWithEmail(email, password);
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    if (!result.error) {
+      await showToast("Login successful");
      Navigator.pushNamed(context,  HomeScreen.routeName,
 
       );
-    // } else {
-    //   showToast(result.errorMessage);
-    // }
+    } else {
+      showToast(result.errorMessage);
+    }
   }
 
   showToast(String msg) {

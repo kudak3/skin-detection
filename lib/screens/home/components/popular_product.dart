@@ -17,7 +17,7 @@ class _ProductsState extends State<PopularProducts> {
 
   @override
   void initState() {
-     // getProducts();
+     getProducts();
     super.initState();
 
   }
