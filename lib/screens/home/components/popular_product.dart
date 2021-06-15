@@ -8,6 +8,10 @@ import '../../../size_config.dart';
 import 'section_title.dart';
 
 class PopularProducts extends StatefulWidget {
+  final String title;
+
+  PopularProducts({Key key, this.title}) : super(key: key);
+
   _ProductsState createState() => _ProductsState();
 }
 
@@ -17,9 +21,9 @@ class _ProductsState extends State<PopularProducts> {
 
   @override
   void initState() {
-     getProducts();
-    super.initState();
+    getProducts();
 
+    super.initState();
   }
 
   @override
@@ -29,7 +33,7 @@ class _ProductsState extends State<PopularProducts> {
         Padding(
           padding:
               EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
-          child: SectionTitle(title: "All Products", press: () {}),
+          child: SectionTitle(title: widget.title, press: () {}),
         ),
         SizedBox(height: getProportionateScreenWidth(20)),
         SingleChildScrollView(

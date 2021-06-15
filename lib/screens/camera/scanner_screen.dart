@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:skin_detection/constants.dart';
+import 'package:skin_detection/screens/camera/results_page.dart';
 import 'package:skin_detection/screens/camera/scanner_widget.dart';
 
 class ScannerScreen extends StatefulWidget {
@@ -40,68 +41,72 @@ class ScannerScreenState extends State<ScannerScreen>
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(middle: Text("Scanning Animation")),
-      child: SafeArea(
-        child: Container(
-            height: double.infinity,
-            width: double.infinity,
-            child: Column(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Stack(children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(color: CupertinoColors.white),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(12))),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(12)),
-                          child: widget.image != null
+    return SafeArea(
+      child: Container(
+          height: double.infinity,
+          width: double.infinity,
+          child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Stack(children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(color: CupertinoColors.white),
+                          borderRadius: BorderRadius.all(Radius.circular(12))),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                        child: widget.image != null
                             ? Image.file(
                                 widget.image,
                                 width: 334,
                               )
                             : CircularProgressIndicator(),
-                        ),
                       ),
                     ),
-                    ImageScannerAnimation(
-                      _animationStopped,
-                      334,
-                      animation: _animationController,
-                    )
-                  ]),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 32.0),
-                    child: CupertinoButton(
-                      color: kPrimaryColor,
-                      onPressed: () {
-                        if (!scanning) {
-                          animateScanAnimation(false);
-                          setState(() {
-                            _animationStopped = false;
-                            scanning = true;
-                            scanText = "Stop";
-                          });
-                        } else {
-                          print("here dada");
-                          setState(() {
-                            _animationStopped = true;
-                            scanning = false;
-                            scanText = "Scan";
-                          });
-                        }
-                      },
-                      child: Text(scanText),
-                    ),
+                  ),
+                  ImageScannerAnimation(
+                    _animationStopped,
+                    334,
+                    animation: _animationController,
                   )
-                ])),
-      ),
+                ]),
+                Padding(
+                  padding: const EdgeInsets.only(top: 32.0),
+                  child: CupertinoButton(
+                    color: kPrimaryColor,
+                    onPressed: () {
+                      if (!scanning) {
+                        animateScanAnimation(false);
+                        setState(() {
+                          _animationStopped = false;
+                          scanning = true;
+                          scanText = "Stop";
+                        });
+                      } else {
+                        print("here dada");
+                        setState(() {
+                          _animationStopped = true;
+                          scanning = false;
+                          scanText = "Scan";
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => ResultsPage(
+                                image: widget.image,
+                              ),
+                            ),
+                          );
+                        });
+                      }
+                    },
+                    child: Text(scanText),
+                  ),
+                )
+              ])),
     );
   }
 
