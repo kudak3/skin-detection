@@ -6,11 +6,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:skin_detection/constants.dart';
 import 'package:skin_detection/screens/camera/scanner_screen.dart';
 
 import '../../main.dart';
 
-enum ScreenMode { liveFeed, gallery ,scanning}
+enum ScreenMode { liveFeed, gallery, scanning }
 
 class CameraView extends StatefulWidget {
   CameraView(
@@ -86,20 +87,22 @@ class _CameraViewState extends State<CameraView> {
 
   Widget _body() {
     Widget body;
-    if (_mode == ScreenMode.liveFeed)
-      body = _liveFeedBody();
-    if(_mode == ScreenMode.gallery)
-      body = _galleryBody();
-    if(_mode == ScreenMode.scanning)
-      body = _scanningBody();
+    if (_mode == ScreenMode.liveFeed) body = _liveFeedBody();
+    if (_mode == ScreenMode.gallery) body = _galleryBody();
+    if (_mode == ScreenMode.scanning) body = _scanningBody();
     return body;
   }
 
-  Widget _scanningBody(){
-     if (_controller?.value.isInitialized == false ) {
-      return Container();
+  Widget _scanningBody() {
+    if (_image == null ) {
+      if(_controller?.value.isInitialized == false){
+        return Container();
+      }
+
     }
-     return ScannerScreen(image: _image,);
+    return ScannerScreen(
+      image: _image,
+    );
   }
 
   Widget _liveFeedBody() {
@@ -141,7 +144,6 @@ class _CameraViewState extends State<CameraView> {
                           }),
                       GestureDetector(
                         onTap: () {
-
                           takePhoto();
                         },
                         child: Icon(
@@ -203,6 +205,7 @@ class _CameraViewState extends State<CameraView> {
       Padding(
         padding: EdgeInsets.symmetric(horizontal: 16),
         child: ElevatedButton(
+          style: ElevatedButton.styleFrom(primary: kPrimaryColor),
           child: Text('From Gallery'),
           onPressed: () => _getImage(ImageSource.gallery),
         ),
@@ -210,10 +213,25 @@ class _CameraViewState extends State<CameraView> {
       Padding(
         padding: EdgeInsets.symmetric(horizontal: 16),
         child: ElevatedButton(
+          style: ElevatedButton.styleFrom(primary: kPrimaryColor),
           child: Text('Take a picture'),
           onPressed: () => _getImage(ImageSource.camera),
         ),
       ),
+      _image != null
+          ? Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(primary: kPrimaryColor),
+                child: Text('Process image'),
+                onPressed: () {
+                  setState(() {
+                    _mode = ScreenMode.scanning;
+                  });
+                },
+              ),
+            )
+          : SizedBox()
     ]);
   }
 
@@ -326,6 +344,6 @@ class _CameraViewState extends State<CameraView> {
   void takePhoto() async {
     _mode = ScreenMode.scanning;
     _getImage(ImageSource.camera);
-     setState(() {});
+    setState(() {});
   }
 }

@@ -31,6 +31,19 @@ class FirestoreService {
     }
   }
 
+  Future updateUserDetails(Map<String, String> details) async {
+    UserDetails user = await authenticationService.currentUser();
+    try {
+      await _usersCollectionReference.doc(user.uid).set({
+        'skin_tone': details['skin_tone'],
+        'skin_type': details['skin_type'],
+      }, SetOptions(merge: true));
+      return APIResponse<bool>(error: false);
+    } catch (e) {
+      return APIResponse<bool>(error: true, errorMessage: e.message);
+    }
+  }
+
   Future getAllProducts() async {
     QuerySnapshot querySnapShot = await _productsCollectionReference.get();
 

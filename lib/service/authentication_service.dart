@@ -16,7 +16,7 @@ class AuthenticationService {
 
   Future logout() async {
     try {
-      return APIResponse<User>(
+      return APIResponse<bool>(
         error: false,
       );
     } catch (e) {

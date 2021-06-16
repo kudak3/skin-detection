@@ -2,19 +2,18 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:palette_generator/palette_generator.dart';
-import 'package:skin_detection/components/default_button.dart';
-import 'package:skin_detection/constants.dart';
+import 'package:skin_detection/models/api_response.dart';
 import 'package:skin_detection/models/product.dart';
 import 'package:skin_detection/screens/camera/image_view.dart';
 import 'package:skin_detection/screens/camera/palette_swatch.dart';
-import 'package:skin_detection/screens/camera/scanner_widget.dart';
-import 'package:skin_detection/screens/details/components/color_dots.dart';
 import 'package:skin_detection/screens/details/components/top_rounded_container.dart';
 import 'package:skin_detection/screens/home/components/popular_product.dart';
 import 'package:skin_detection/service/firestore_service.dart';
 
+import '../../constants.dart';
 import '../../size_config.dart';
 
 class ResultsPage extends StatefulWidget {
@@ -50,6 +49,7 @@ class ResultsPageState extends State<ResultsPage>
     bgColors =
         palette.dominantColor != null ? palette.dominantColor : Colors.white;
     setState(() {});
+   bgColors != null && updateUserDetails();
   }
 
   @override
@@ -100,9 +100,28 @@ class ResultsPageState extends State<ResultsPage>
     super.dispose();
   }
 
+  updateUserDetails()async{
+    APIResponse response = await firestoreService.updateUserDetails({'skin_tone': bgColors.color.toString(),'skin_type': 'dry'});
+     if (!response.error) {
+       showToast("Logged out successfully");
+
+    } else {
+      showToast(response.errorMessage);
+    }
+  }
+
+  showToast(String msg) {
+    Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        textColor: kPrimaryColor,
+        fontSize: 16.0);
+  }
+
+
   getProducts() async {
     var tmp = await firestoreService.getAllProducts();
-    print(tmp);
 
     demoProducts = tmp;
     setState(() {});
