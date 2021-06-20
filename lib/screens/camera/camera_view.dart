@@ -40,6 +40,7 @@ class _CameraViewState extends State<CameraView> {
   bool flash = false;
   double transform = 0;
   String filePath = '';
+  var faces;
 
   @override
   void initState() {
@@ -115,6 +116,15 @@ class _CameraViewState extends State<CameraView> {
         fit: StackFit.expand,
         children: <Widget>[
           CameraPreview(_controller),
+          if(faces.length == 0) Center(child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.warning_amber_outlined,color: Colors.red,size: 50.0,),
+              Text("No Face Detected",style: TextStyle(color: Colors.red,fontSize: 30.0,),),
+              SizedBox(height: 60.0,)
+            ],
+          )),
           if (widget.customPaint != null) widget.customPaint,
           Positioned(
             bottom: 0.0,
@@ -296,7 +306,7 @@ class _CameraViewState extends State<CameraView> {
       _image = File(pickedFile.path);
     });
     final inputImage = InputImage.fromFilePath(pickedFile.path);
-    widget.onImage(inputImage);
+    faces = widget.onImage(inputImage);
   }
 
   Future _processCameraImage(CameraImage image) async {
@@ -338,7 +348,7 @@ class _CameraViewState extends State<CameraView> {
     final inputImage =
         InputImage.fromBytes(bytes: bytes, inputImageData: inputImageData);
 
-    widget.onImage(inputImage);
+    faces = widget.onImage(inputImage);
   }
 
   void takePhoto() async {

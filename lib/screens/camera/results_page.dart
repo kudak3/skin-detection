@@ -103,7 +103,7 @@ class ResultsPageState extends State<ResultsPage>
   updateUserDetails()async{
     APIResponse response = await firestoreService.updateUserDetails({'skin_tone': bgColors.color.toString(),'skin_type': 'dry'});
      if (!response.error) {
-       showToast("Logged out successfully");
+       showToast("User recommendations saved successfully");
 
     } else {
       showToast(response.errorMessage);

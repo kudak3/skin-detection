@@ -17,6 +17,7 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
   ));
   bool isBusy = false;
   CustomPaint customPaint;
+  var faces;
 
   @override
   void dispose() {
@@ -31,6 +32,7 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
       customPaint: customPaint,
       onImage: (inputImage) {
         processImage(inputImage);
+        return faces;
       },
       initialDirection: CameraLensDirection.front,
     );
@@ -39,7 +41,7 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
   Future<void> processImage(InputImage inputImage) async {
     if (isBusy) return;
     isBusy = true;
-    final faces = await faceDetector.processImage(inputImage);
+     faces = await faceDetector.processImage(inputImage);
     print('Found ${faces.length} faces');
     if (inputImage.inputImageData?.size != null &&
         inputImage.inputImageData?.imageRotation != null) {
