@@ -16,6 +16,8 @@ UserDetails _$UserDetailsFromJson(Map<String, dynamic> json) {
     json['lastName'] as String,
     json['phoneNumber'] as String,
     json['address'] as String,
+    json['skinTone'] as String,
+    json['skinType'] as String,
   );
 }
 
@@ -29,4 +31,6 @@ Map<String, dynamic> _$UserDetailsToJson(UserDetails instance) =>
       'lastName': instance.lastName,
       'phoneNumber': instance.phoneNumber,
       'address': instance.address,
+      'skinTone': instance.skinTone,
+      'skinType': instance.skinType,
     };

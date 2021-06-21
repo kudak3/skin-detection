@@ -38,7 +38,14 @@ class FirestoreService {
         'skin_tone': details['skin_tone'],
         'skin_type': details['skin_type'],
       }, SetOptions(merge: true));
-      return APIResponse<bool>(error: false);
+      UserDetails userDetails;
+      _usersCollectionReference.doc(user.uid).get().then((doc) => {
+            if (doc.exists)
+              {userDetails = UserDetails.fromJson(doc.data())}
+            else
+              {print("Document does not exists")}
+          });
+      return APIResponse<UserDetails>(data: userDetails, error: false);
     } catch (e) {
       return APIResponse<bool>(error: true, errorMessage: e.message);
     }

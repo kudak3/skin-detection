@@ -1,5 +1,6 @@
 import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:skin_detection/size_config.dart';
 
 class ImageScannerAnimation extends AnimatedWidget {
   final bool stopped;
@@ -27,7 +28,8 @@ class ImageScannerAnimation extends AnimatedWidget {
         child: new Opacity(
             opacity: (stopped) ? 0.0 : 1.0,
             child: Container(
-              height: 60.0,
+              margin: EdgeInsets.only(bottom: 20.0),
+              height: getProportionateScreenHeight(100.0),
               width: width,
               decoration: new BoxDecoration(
                   gradient: new LinearGradient(

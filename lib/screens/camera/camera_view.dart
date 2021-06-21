@@ -10,6 +10,8 @@ import 'package:skin_detection/constants.dart';
 import 'package:skin_detection/screens/camera/scanner_screen.dart';
 
 import '../../main.dart';
+import 'results_page.dart';
+import 'scanner_widget.dart';
 
 enum ScreenMode { liveFeed, gallery, scanning }
 
@@ -31,7 +33,8 @@ class CameraView extends StatefulWidget {
   _CameraViewState createState() => _CameraViewState();
 }
 
-class _CameraViewState extends State<CameraView> {
+class _CameraViewState extends State<CameraView>
+    with SingleTickerProviderStateMixin {
   ScreenMode _mode = ScreenMode.liveFeed;
   CameraController _controller;
   File _image;
@@ -41,10 +44,23 @@ class _CameraViewState extends State<CameraView> {
   double transform = 0;
   String filePath = '';
   var faces;
+  AnimationController _animationController;
+  bool _animationStopped = false;
+  bool scanning = false;
 
   @override
   void initState() {
     super.initState();
+    _animationController = new AnimationController(
+        duration: new Duration(seconds: 1), vsync: this);
+
+    _animationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        animateScanAnimation(true);
+      } else if (status == AnimationStatus.dismissed) {
+        animateScanAnimation(false);
+      }
+    });
 
     _imagePicker = ImagePicker();
     for (var i = 0; i < cameras.length; i++) {
@@ -55,9 +71,18 @@ class _CameraViewState extends State<CameraView> {
     _startLiveFeed();
   }
 
+  void animateScanAnimation(bool reverse) {
+    if (reverse) {
+      _animationController.reverse(from: 1.0);
+    } else {
+      _animationController.forward(from: 0.0);
+    }
+  }
+
   @override
   void dispose() {
     _stopLiveFeed();
+    _animationController.dispose();
     super.dispose();
   }
 
@@ -95,11 +120,10 @@ class _CameraViewState extends State<CameraView> {
   }
 
   Widget _scanningBody() {
-    if (_image == null ) {
-      if(_controller?.value.isInitialized == false){
+    if (_image == null) {
+      if (_controller?.value.isInitialized == false) {
         return Container();
       }
-
     }
     return ScannerScreen(
       image: _image,
@@ -116,16 +140,35 @@ class _CameraViewState extends State<CameraView> {
         fit: StackFit.expand,
         children: <Widget>[
           CameraPreview(_controller),
-          if(faces != null && faces.length == 0) Center(child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.warning_amber_outlined,color: Colors.red,size: 50.0,),
-              Text("No Face Detected",style: TextStyle(color: Colors.red,fontSize: 30.0,),),
-              SizedBox(height: 60.0,)
-            ],
-          )),
+          if (faces != null && faces.length == 0)
+            Center(
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.warning_amber_outlined,
+                  color: Colors.red,
+                  size: 50.0,
+                ),
+                Text(
+                  "No Face Detected",
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 30.0,
+                  ),
+                ),
+                SizedBox(
+                  height: 60.0,
+                )
+              ],
+            )),
           if (widget.customPaint != null) widget.customPaint,
+          ImageScannerAnimation(
+            _animationStopped,
+            334,
+            animation: _animationController,
+          ),
           Positioned(
             bottom: 0.0,
             child: Container(
@@ -154,7 +197,24 @@ class _CameraViewState extends State<CameraView> {
                           }),
                       GestureDetector(
                         onTap: () {
-                          takePhoto();
+                          if (!scanning) {
+                            animateScanAnimation(false);
+                            setState(() {
+                              _animationStopped = false;
+                              scanning = true;
+                            });
+                            Future.delayed(const Duration(milliseconds: 10000),
+                                () {
+                              setState(() {
+                                _animationStopped = true;
+                                scanning = false;
+                                _controller
+                                    .initialize()
+                                    .then((value) => takePhoto());
+                              });
+                            });
+                            // takePhoto();
+                          }
                         },
                         child: Icon(
                           Icons.panorama_fish_eye,
@@ -270,7 +330,7 @@ class _CameraViewState extends State<CameraView> {
     final camera = cameras[_cameraIndex];
     _controller = CameraController(
       camera,
-      ResolutionPreset.low,
+      ResolutionPreset.high,
       enableAudio: false,
     );
     _controller?.initialize().then((_) {
@@ -352,8 +412,14 @@ class _CameraViewState extends State<CameraView> {
   }
 
   void takePhoto() async {
-    _mode = ScreenMode.scanning;
-    _getImage(ImageSource.camera);
-    setState(() {});
+    XFile file = await _controller.takePicture();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ResultsPage(
+          image: File(file.path),
+        ),
+      ),
+    );
   }
 }

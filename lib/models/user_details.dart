@@ -12,9 +12,12 @@ class UserDetails {
   String lastName;
   String phoneNumber;
   String address;
+  String skinTone;
+  String skinType;
+
 
   UserDetails(this.uid, this.displayName, this.email, this.photoUrl,
-      this.firstName, this.lastName, this.phoneNumber, this.address);
+      this.firstName, this.lastName, this.phoneNumber, this.address,this.skinTone,this.skinType);
 
   UserDetails.optional(
       {this.uid,

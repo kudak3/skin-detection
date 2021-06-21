@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:get_it/get_it.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:skin_detection/models/api_response.dart';
 import 'package:skin_detection/models/product.dart';
+import 'package:skin_detection/models/user_details.dart';
 import 'package:skin_detection/screens/camera/image_view.dart';
 import 'package:skin_detection/screens/camera/palette_swatch.dart';
 import 'package:skin_detection/screens/details/components/top_rounded_container.dart';
@@ -30,6 +32,7 @@ class ResultsPage extends StatefulWidget {
 class ResultsPageState extends State<ResultsPage>
     with SingleTickerProviderStateMixin {
   PaletteColor bgColors;
+  UserDetails userDetails;
 
   FirestoreService get firestoreService => GetIt.I<FirestoreService>();
   List<Product> demoProducts = [];
@@ -38,6 +41,7 @@ class ResultsPageState extends State<ResultsPage>
   void initState() {
     getProducts();
     initializePalette();
+
     super.initState();
   }
 
@@ -47,9 +51,9 @@ class ResultsPageState extends State<ResultsPage>
       size: Size(200, 100),
     );
     bgColors =
-        palette.dominantColor != null ? palette.dominantColor : Colors.white;
+    palette.dominantColor != null ? palette.dominantColor : Colors.white;
     setState(() {});
-   bgColors != null && updateUserDetails();
+    bgColors != null && updateUserDetails();
   }
 
   @override
@@ -58,39 +62,39 @@ class ResultsPageState extends State<ResultsPage>
       body: SafeArea(
         child: SingleChildScrollView(
             child: Column(children: [
-          SizedBox(height: getProportionateScreenWidth(10)),
-          ImageView(image: widget.image),
-          SizedBox(height: getProportionateScreenWidth(30)),
-          PopularProducts(
-            title: "Recommended for you",
-          ),
-          TopRoundedContainer(
-            color: Color(0xFFF6F7F9),
-            child: Column(
-              children: [
-                TopRoundedContainer(
-                  color: Colors.white,
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 50),
-                        child: PaletteSwatch(
-                          label: 'Skin tone',
-                          color:
+              SizedBox(height: getProportionateScreenWidth(10)),
+              ImageView(image: widget.image),
+              SizedBox(height: getProportionateScreenWidth(30)),
+              PopularProducts(
+                title: "Recommended for you",
+              ),
+              TopRoundedContainer(
+                color: Color(0xFFF6F7F9),
+                child: Column(
+                  children: [
+                    TopRoundedContainer(
+                      color: Colors.white,
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 50),
+                            child: PaletteSwatch(
+                              label: 'Skin tone',
+                              color:
                               bgColors != null ? bgColors.color : Colors.white,
-                        ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 50),
+                            child: Text(userDetails.skinType),
+                          ),
+                        ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 50),
-                        child: Text('Dry skin'),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-        ])),
+              ),
+            ])),
       ),
     );
   }
@@ -100,11 +104,18 @@ class ResultsPageState extends State<ResultsPage>
     super.dispose();
   }
 
-  updateUserDetails()async{
-    APIResponse response = await firestoreService.updateUserDetails({'skin_tone': bgColors.color.toString(),'skin_type': 'dry'});
-     if (!response.error) {
-       showToast("User recommendations saved successfully");
+  updateUserDetails() async {
+    Random rnd = new Random();
+    var lst = ['dry', 'oily', 'normal', 'combination'];
+    var type = lst[rnd.nextInt(lst.length)];
 
+    APIResponse response = await firestoreService.updateUserDetails(
+        {'skinTone': bgColors.color.value.toRadixString(16), 'skinType': type});
+
+    if (!response.error) {
+      showToast("User recommendations saved successfully");
+      userDetails = response.data;
+      setState(() {});
     } else {
       showToast(response.errorMessage);
     }
@@ -118,7 +129,6 @@ class ResultsPageState extends State<ResultsPage>
         textColor: kPrimaryColor,
         fontSize: 16.0);
   }
-
 
   getProducts() async {
     var tmp = await firestoreService.getAllProducts();
