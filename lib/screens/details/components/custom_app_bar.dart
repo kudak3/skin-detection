@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:skin_detection/models/cart.dart';
+import 'package:skin_detection/screens/cart/cart_screen.dart';
+import 'package:skin_detection/screens/home/components/icon_btn_with_counter.dart';
+import 'package:provider/provider.dart';
 
 import '../../../size_config.dart';
 
@@ -14,6 +18,7 @@ class CustomAppBar extends PreferredSize {
 
   @override
   Widget build(BuildContext context) {
+    var cart = context.watch<Cart>();
     return SafeArea(
       child: Padding(
         padding:
@@ -43,18 +48,10 @@ class CustomAppBar extends PreferredSize {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(14),
               ),
-              child: Row(
-                children: [
-                  Text(
-                    "$rating",
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(width: 5),
-                  SvgPicture.asset("assets/icons/Star Icon.svg"),
-                ],
+              child: IconBtnWithCounter(
+                svgSrc: "assets/icons/Cart Icon.svg",
+                numOfitem: cart.products.length,
+                press: () => Navigator.pushNamed(context, CartScreen.routeName),
               ),
             )
           ],

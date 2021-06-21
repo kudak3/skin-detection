@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:skin_detection/components/default_button.dart';
+import 'package:skin_detection/models/cart.dart';
 import 'package:skin_detection/models/product.dart';
 import 'package:skin_detection/size_config.dart';
+import 'package:provider/provider.dart';
 
 
 import 'color_dots.dart';
@@ -43,7 +45,10 @@ class Body extends StatelessWidget {
                         ),
                         child: DefaultButton(
                           text: "Add To Cart",
-                          press: () {},
+                          press: () {
+                            var cart = context.read<Cart>();
+                            cart.add(product);
+                          },
                         ),
                       ),
                     ),

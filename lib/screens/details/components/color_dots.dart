@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:skin_detection/components/rounded_icon_btn.dart';
+import 'package:skin_detection/models/cart.dart';
 import 'package:skin_detection/models/product.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
@@ -13,6 +15,7 @@ class ColorDots extends StatelessWidget {
 
   final Product product;
 
+
   @override
   Widget build(BuildContext context) {
     // Now this is fixed and only for demo
@@ -23,6 +26,8 @@ class ColorDots extends StatelessWidget {
       Color(0xFFDECB9C),
       Colors.white,
     ];
+
+    var cart = context.watch<Cart>();
     return Padding(
       padding:
           EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
@@ -38,13 +43,25 @@ class ColorDots extends StatelessWidget {
           Spacer(),
           RoundedIconBtn(
             icon: Icons.remove,
-            press: () {},
+            press: () {
+              if (product.numOfItems > 1) {
+                cart.update(product,"decrement");
+              }
+
+            },
           ),
-          SizedBox(width: getProportionateScreenWidth(20)),
+          SizedBox(width: getProportionateScreenWidth(10)),
+          Text(
+            product.numOfItems.toString(),
+            style: TextStyle(fontSize: 20),
+          ),
+          SizedBox(width: getProportionateScreenWidth(10)),
           RoundedIconBtn(
             icon: Icons.add,
             showShadow: true,
-            press: () {},
+            press: () {
+              cart.update(product,"increment");
+            },
           ),
         ],
       ),

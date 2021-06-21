@@ -116,7 +116,7 @@ class _CameraViewState extends State<CameraView> {
         fit: StackFit.expand,
         children: <Widget>[
           CameraPreview(_controller),
-          if(faces.length == 0) Center(child: Column(
+          if(faces != null && faces.length == 0) Center(child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

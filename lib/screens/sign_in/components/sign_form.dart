@@ -195,7 +195,8 @@ class _SignFormState extends State<SignForm> {
         msg: msg,
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER,
-        textColor: Colors.green,
+        textColor: Colors.white,
+        backgroundColor: kPrimaryColor,
         fontSize: 16.0);
   }
 }

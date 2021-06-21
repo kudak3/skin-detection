@@ -9,6 +9,7 @@ class Product {
   String image;
   double rating, price;
   bool isFavourite, isPopular;
+  int numOfItems = 1;
 
   Product(
       {this.id,

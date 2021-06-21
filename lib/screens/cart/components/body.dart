@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:skin_detection/models/Cart.dart';
+import 'package:skin_detection/models/cart.dart';
+import 'package:provider/provider.dart';
 
 
 import '../../../size_config.dart';
@@ -14,19 +15,20 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
+    var cart = context.watch<Cart>();
     return Padding(
       padding:
           EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
       child: ListView.builder(
-        itemCount: demoCarts.length,
+        itemCount: cart.products.length,
         itemBuilder: (context, index) => Padding(
           padding: EdgeInsets.symmetric(vertical: 10),
           child: Dismissible(
-            key: Key(demoCarts[index].product.id.toString()),
+            key: Key(cart.products[index].id.toString()),
             direction: DismissDirection.endToStart,
             onDismissed: (direction) {
               setState(() {
-                demoCarts.removeAt(index);
+                cart.remove(cart.products[index]);
               });
             },
             background: Container(
@@ -42,7 +44,7 @@ class _BodyState extends State<Body> {
                 ],
               ),
             ),
-            child: CartCard(cart: demoCarts[index]),
+            child: CartCard(product: cart.products[index]),
           ),
         ),
       ),

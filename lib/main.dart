@@ -2,16 +2,19 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
 
 import 'package:skin_detection/screens/camera/camera_screen.dart';
 
-
+import 'models/cart.dart';
 import 'routes.dart';
 import 'screens/splash/splash_screen.dart';
 import 'service/authentication_service.dart';
 import 'service/firestore_service.dart';
 import 'theme.dart';
+
 List<CameraDescription> cameras = [];
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -19,17 +22,14 @@ Future<void> main() async {
   setupLocator();
   Firebase.initializeApp();
 
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider(create: (context) => Cart(), child: MyApp()),
+  );
 }
 
-
-
-void setupLocator(){
-   GetIt.I.registerLazySingleton(()=> FirestoreService());
-  GetIt.I.registerLazySingleton(()=> AuthenticationService());
-
-
-
+void setupLocator() {
+  GetIt.I.registerLazySingleton(() => FirestoreService());
+  GetIt.I.registerLazySingleton(() => AuthenticationService());
 }
 
 class MyApp extends StatelessWidget {

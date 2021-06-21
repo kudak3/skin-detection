@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:skin_detection/components/default_button.dart';
+import 'package:skin_detection/models/cart.dart';
+import 'package:provider/provider.dart';
 
 
 import '../../../constants.dart';
@@ -13,6 +15,8 @@ class CheckoutCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var cart = context.watch<Cart>();
+
     return Container(
       padding: EdgeInsets.symmetric(
         vertical: getProportionateScreenWidth(15),
@@ -50,8 +54,7 @@ class CheckoutCard extends StatelessWidget {
                   ),
                   child: SvgPicture.asset("assets/icons/receipt.svg"),
                 ),
-                Spacer(),
-                Text("Add voucher code"),
+                
                 const SizedBox(width: 10),
                 Icon(
                   Icons.arrow_forward_ios,
@@ -69,7 +72,7 @@ class CheckoutCard extends StatelessWidget {
                     text: "Total:\n",
                     children: [
                       TextSpan(
-                        text: "\$337.15",
+                        text: "\$" + cart.totalPrice.toString(),
                         style: TextStyle(fontSize: 16, color: Colors.black),
                       ),
                     ],
