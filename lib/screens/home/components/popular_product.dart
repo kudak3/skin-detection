@@ -9,8 +9,9 @@ import 'section_title.dart';
 
 class PopularProducts extends StatefulWidget {
   final String title;
+  final String skinType;
 
-  PopularProducts({Key key, this.title}) : super(key: key);
+  PopularProducts({Key key, this.title, this.skinType}) : super(key: key);
 
   _ProductsState createState() => _ProductsState();
 }
@@ -21,6 +22,8 @@ class _ProductsState extends State<PopularProducts> {
 
   @override
   void initState() {
+    print("init");
+    print(widget.skinType);
     getProducts();
 
     super.initState();
@@ -55,11 +58,16 @@ class _ProductsState extends State<PopularProducts> {
   }
 
   getProducts() async {
-    var tmp = await firestoreService.getAllProducts();
-    print(tmp);
+    var list;
+    if (widget.skinType != null) {
 
+      list = await firestoreService.getProductsBySkinType(widget.skinType);
+    } else {
+      print("not here");
+      list = await firestoreService.getAllProducts();
+    }
     setState(() {
-      demoProducts = tmp;
+      demoProducts = list;
     });
   }
 }

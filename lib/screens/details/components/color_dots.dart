@@ -26,6 +26,7 @@ class ColorDots extends StatelessWidget {
       Color(0xFFDECB9C),
       Colors.white,
     ];
+    print(product);
 
     var cart = context.watch<Cart>();
     return Padding(
@@ -52,7 +53,7 @@ class ColorDots extends StatelessWidget {
           ),
           SizedBox(width: getProportionateScreenWidth(10)),
           Text(
-            product.numOfItems.toString(),
+            product.numOfItems != null ? product.numOfItems.toString() : "1",
             style: TextStyle(fontSize: 20),
           ),
           SizedBox(width: getProportionateScreenWidth(10)),

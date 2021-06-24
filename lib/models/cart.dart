@@ -12,8 +12,12 @@ class Cart extends ChangeNotifier {
   List<Product> get products => _products;
 
   /// The current total price of all items.
-  double get totalPrice =>
-      _products.fold(0, (total, current) => total + current.price * current.numOfItems);
+  double get totalPrice => _products.fold(0, (total, current) {
+    if(current.numOfItems ==null){
+         current.numOfItems = 1;
+       }
+        return total + current.price * current.numOfItems;
+      });
 
   /// Adds [product] to cart. This is the only way to modify the cart from outside.
   void add(Product product) {
@@ -24,19 +28,22 @@ class Cart extends ChangeNotifier {
     notifyListeners();
   }
 
-  void update(Product product,String operator){
-    try{
-       int i = _products.indexOf(product);
-    product.numOfItems = operator == "increment" ? ++product.numOfItems : --product.numOfItems;
-    _products[i] = product;
-
-    } on RangeError{
+  void update(Product product, String operator) {
+    try {
+      int i = _products.indexOf(product);
+      if (product.numOfItems == null) {
+        product.numOfItems = 1;
+      }
+      product.numOfItems =
+          operator == "increment" ? ++product.numOfItems : --product.numOfItems;
+      _products[i] = product;
+    } on RangeError {
       print("Out of range");
-    } on NullThrownError{
+    } on NullThrownError {
       print("Null pointer");
     }
 
- notifyListeners();
+    notifyListeners();
   }
 
   void remove(Product product) {
@@ -45,6 +52,12 @@ class Cart extends ChangeNotifier {
     // Don't forget to tell dependent widgets to rebuild _every time_
     // you change the model.
     notifyListeners();
+  }
+
+  void clearCart(){
+    _products.clear();
+    notifyListeners();
+
   }
 
   void _showToast(String msg) {
@@ -56,5 +69,4 @@ class Cart extends ChangeNotifier {
         backgroundColor: kPrimaryColor,
         fontSize: 16.0);
   }
-
 }

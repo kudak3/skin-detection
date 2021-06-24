@@ -13,7 +13,7 @@ class PaletteSwatch extends StatelessWidget {
   /// If the [paletteColor] has property `isTargetColorFound` as `false`,
   /// then the swatch will show a placeholder instead, to indicate
   /// that there is no color.
-   PaletteSwatch({
+  PaletteSwatch({
     Key key,
     this.color,
     this.label,
@@ -50,18 +50,51 @@ class PaletteSwatch extends StatelessWidget {
               color: Color(0xff404040),
               strokeWidth: 2.0,
             )
-          : Container(
-              decoration: BoxDecoration(
-                  color: color,
-                  border: Border.all(
-                    width: 1.0,
-                    color: _kPlaceholderColor,
-                    style: colorDistance < 0.2
-                        ? BorderStyle.solid
-                        : BorderStyle.none,
-                  )),
-              width: getProportionateScreenWidth(50),
-              height: getProportionateScreenHeight(40),
+          : Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                      color: Colors.red,
+                      border: Border.all(
+                        width: 1.0,
+                        color: _kPlaceholderColor,
+                        style: colorDistance < 0.2
+                            ? BorderStyle.solid
+                            : BorderStyle.none,
+                      ),
+                      shape: BoxShape.circle),
+                  width: getProportionateScreenWidth(120),
+                  height: getProportionateScreenHeight(150),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      color: color,
+                      border: Border.all(
+                        width: 1.0,
+                        color: _kPlaceholderColor,
+                        style: colorDistance < 0.2
+                            ? BorderStyle.solid
+                            : BorderStyle.none,
+                      ),
+                      shape: BoxShape.circle),
+                  width: getProportionateScreenWidth(110),
+                  height: getProportionateScreenHeight(150),
+                ),
+                  Container(
+                  decoration: BoxDecoration(
+                      color: color,
+                      border: Border.all(
+                        width: 1.0,
+                        color: _kPlaceholderColor,
+                        style: colorDistance < 0.2
+                            ? BorderStyle.solid
+                            : BorderStyle.none,
+                      ),
+                      shape: BoxShape.circle),
+                  width: getProportionateScreenWidth(100),
+                  height: getProportionateScreenHeight(150),
+                ),
+              ],
             ),
     );
 
@@ -69,11 +102,11 @@ class PaletteSwatch extends StatelessWidget {
       swatch = ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 130.0, minWidth: 130.0),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             swatch,
-            Container(width: 5.0),
-            Text(label),
+            // Container(width: 5.0),
+            // Text(label),
           ],
         ),
       );

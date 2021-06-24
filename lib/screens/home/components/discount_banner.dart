@@ -25,14 +25,14 @@ class DiscountBanner extends StatelessWidget {
         TextSpan(
           style: TextStyle(color: Colors.white),
           children: [
-            TextSpan(text: "Scan your face to get recommendations\n"),
             TextSpan(
-              text: "Coming soon",
+              text: "Scan your face \n",
               style: TextStyle(
                 fontSize: getProportionateScreenWidth(24),
                 fontWeight: FontWeight.bold,
               ),
             ),
+            TextSpan(text: "to get recommendations"),
           ],
         ),
       ),

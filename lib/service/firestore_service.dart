@@ -35,11 +35,11 @@ class FirestoreService {
     UserDetails user = await authenticationService.currentUser();
     try {
       await _usersCollectionReference.doc(user.uid).set({
-        'skin_tone': details['skin_tone'],
-        'skin_type': details['skin_type'],
+        'skinTone': details['skinTone'],
+        'skinType': details['skinType'],
       }, SetOptions(merge: true));
       UserDetails userDetails;
-      _usersCollectionReference.doc(user.uid).get().then((doc) => {
+      await _usersCollectionReference.doc(user.uid).get().then((doc) => {
             if (doc.exists)
               {userDetails = UserDetails.fromJson(doc.data())}
             else
@@ -51,8 +51,40 @@ class FirestoreService {
     }
   }
 
+  Future getUserDetails() async {
+    UserDetails userDetails;
+    try {
+      UserDetails user = await authenticationService.currentUser();
+      await _usersCollectionReference.doc(user.uid).get().then((doc) => {
+            if (doc.exists)
+              {userDetails = UserDetails.fromJson(doc.data())}
+            else
+              {print("Document does not exists")}
+          });
+      return APIResponse<UserDetails>(data: userDetails, error: false);
+    } catch (e) {
+      print("ERROR HERE");
+      print(e);
+      return APIResponse<bool>(error: true, errorMessage: e.message);
+    }
+  }
+
   Future getAllProducts() async {
     QuerySnapshot querySnapShot = await _productsCollectionReference.get();
+
+    return querySnapShot.docs.map(
+      (e) {
+        Product product = Product.fromJson(e.data());
+        product.id = e.id;
+        return product;
+      },
+    ).toList();
+  }
+
+  Future getProductsBySkinType(String skinType) async {
+    QuerySnapshot querySnapShot = await _productsCollectionReference
+        .where("category", isEqualTo: skinType)
+        .get();
 
     return querySnapShot.docs.map(
       (e) {

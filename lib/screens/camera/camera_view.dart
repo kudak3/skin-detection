@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:skin_detection/constants.dart';
-import 'package:skin_detection/screens/camera/scanner_screen.dart';
 
 import '../../main.dart';
 import 'results_page.dart';
@@ -113,21 +112,11 @@ class _CameraViewState extends State<CameraView>
 
   Widget _body() {
     Widget body;
-    if (_mode == ScreenMode.liveFeed) body = _liveFeedBody();
-    if (_mode == ScreenMode.gallery) body = _galleryBody();
-    if (_mode == ScreenMode.scanning) body = _scanningBody();
+    if (_mode == ScreenMode.liveFeed)
+      body = _liveFeedBody();
+    else
+      body = _galleryBody();
     return body;
-  }
-
-  Widget _scanningBody() {
-    if (_image == null) {
-      if (_controller?.value.isInitialized == false) {
-        return Container();
-      }
-    }
-    return ScannerScreen(
-      image: _image,
-    );
   }
 
   Widget _liveFeedBody() {

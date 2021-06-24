@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:skin_detection/components/default_button.dart';
 import 'package:skin_detection/models/cart.dart';
 import 'package:provider/provider.dart';
-
+import 'package:skin_detection/screens/home/home_screen.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
 
 class CheckoutCard extends StatelessWidget {
-  const CheckoutCard({
+  CheckoutCard({
     Key key,
   }) : super(key: key);
 
@@ -54,7 +55,6 @@ class CheckoutCard extends StatelessWidget {
                   ),
                   child: SvgPicture.asset("assets/icons/receipt.svg"),
                 ),
-                
                 const SizedBox(width: 10),
                 Icon(
                   Icons.arrow_forward_ios,
@@ -82,7 +82,7 @@ class CheckoutCard extends StatelessWidget {
                   width: getProportionateScreenWidth(190),
                   child: DefaultButton(
                     text: "Check Out",
-                    press: () {},
+                    press: () => _asyncInputDialog(context),
                   ),
                 ),
               ],
@@ -91,5 +91,101 @@ class CheckoutCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future _asyncInputDialog(BuildContext context) async {
+    String teamName = '';
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      // dialog is dismissible with a tap on the barrier
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Pay for these products using this account'),
+          content: Row(
+            children: [
+              Expanded(
+                  child: TextField(
+                autofocus: true,
+                decoration: InputDecoration(
+                    labelText: 'Account No.', hintText: '0774 xxx xxx'),
+                onChanged: (value) {
+                  teamName = value;
+                },
+              ))
+            ],
+          ),
+          actions: [
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop(teamName);
+              },
+            ),
+            TextButton(
+              child: Text('Submit'),
+              onPressed: () {
+                Navigator.of(context).pop(teamName);
+                _asyncPinCodeDialog(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future _asyncPinCodeDialog(BuildContext context) async {
+    var cart = Provider.of<Cart>(context, listen: false);
+    String teamName = '';
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      // dialog is dismissible with a tap on the barrier
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Enter Your Security pin'),
+          content: Row(
+            children: [
+              Expanded(
+                  child: TextField(
+                autofocus: true,
+                decoration:
+                    InputDecoration(labelText: 'Pin no.', hintText: 'xxxx'),
+                onChanged: (value) {
+                  teamName = value;
+                },
+              ))
+            ],
+          ),
+          actions: [
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop(teamName);
+              },
+            ),
+            TextButton(
+              child: Text('Confirm'),
+              onPressed: () {
+                Navigator.of(context).pop(teamName);
+                cart.clearCart();
+                showToast("Payment Success");
+                Navigator.pushNamed(context, HomeScreen.routeName);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  showToast(String msg) {
+    Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        textColor: kPrimaryColor,
+        fontSize: 16.0);
   }
 }

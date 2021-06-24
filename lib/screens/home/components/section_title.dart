@@ -12,10 +12,11 @@ class SectionTitle extends StatelessWidget {
   final String title;
   final GestureTapCallback press;
 
+
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: press!=null ? MainAxisAlignment.spaceBetween : MainAxisAlignment.center,
       children: [
         Text(
           title,
@@ -24,7 +25,7 @@ class SectionTitle extends StatelessWidget {
             color: Colors.black,
           ),
         ),
-        GestureDetector(
+      if(press != null)  GestureDetector(
           onTap: press,
           child: Text(
             "See More",

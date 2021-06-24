@@ -9,7 +9,7 @@ class Product {
   String image;
   double rating, price;
   bool isFavourite, isPopular;
-  int numOfItems = 1;
+  int numOfItems;
 
   Product(
       {this.id,
@@ -20,7 +20,8 @@ class Product {
       this.name,
       this.price,
       this.description,
-      this.category});
+      this.category,
+      this.numOfItems = 1});
 
   factory Product.fromJson(Map<String, dynamic> json) =>
       _$ProductFromJson(json);
@@ -29,7 +30,6 @@ class Product {
 
   @override
   String toString() {
-    return 'Product{id:$id,name:$name,description:$description,category:$category,image:$image}';
+    return 'Product{id:$id,name:$name,description:$description,category:$category,image:$image},numOfItems:$numOfItems';
   }
 }
-

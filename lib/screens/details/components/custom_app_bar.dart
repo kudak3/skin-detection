@@ -8,9 +8,7 @@ import 'package:provider/provider.dart';
 import '../../../size_config.dart';
 
 class CustomAppBar extends PreferredSize {
-  final double rating;
 
-  CustomAppBar({@required this.rating});
 
   @override
   // AppBar().preferredSize.height provide us the height that appy on our app bar
