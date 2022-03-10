@@ -1,4 +1,4 @@
-# Restaurantapp
+# BeautyCare
 
 This mobile app allows users to get an approximation of their skin type and skin tone when they scan their face.
 
@@ -7,25 +7,33 @@ To install the following components, please follow the Flutter Installation guid
 
 ### Prerequisites
 To install the following components, please follow the Flutter guide for your platform
-- Android >= 7.0
+- Android >= 5.0
 - Flutter sdk: ">=2.1.0 <3.0.0"
 
 Follow the steps of the official [Flutter documentation](https://docs.flutter.dev/get-started/install) to setup your development environment. 
 
 # Screenshots
+| OS | Status |
+| -- | -- |
+| Android | Tested and working on Android 9 and 11|
+| iOS | Not tested |
 
-| OnBoarding screen | 
+# Screenshots
+
+### OnBoarding Screens
+First Splash screen | Second Splash Screen |
 ------------ | ------------- |
-<img src="https://user-images.githubusercontent.com/52527906/88804804-b6d2bb80-d1ae-11ea-8330-a02a4f246c09.png" alt="Original design" height="480"/> | <img src="https://user-images.githubusercontent.com/52527906/88805183-22b52400-d1af-11ea-9a6e-57875db6cb8e.png" alt="My result" height="480"/> |
+<img src="https://user-images.githubusercontent.com/52527906/157598115-189b70ac-cf69-44c0-8e9d-1e97e4610306.png" alt="Original design" height="400"/> | <img src="https://user-images.githubusercontent.com/52527906/157598174-d5f167ba-c6da-48f4-8de5-830ea4f3b98a.png" alt="My result" height="400"/> |
 
 
-# Customer 
-Create Order | Confirm Order | Order Submited |
------------- | ------------- | -------------- |
-![Screenshot_20200729-153427](https://user-images.githubusercontent.com/52527906/88807202-b8ea4980-d1b1-11ea-9739-4a866543ed2b.png) | ![Screenshot_20200729-153457](https://user-images.githubusercontent.com/52527906/88807294-d7504500-d1b1-11ea-9886-b4ad3cf165ba.png) | ![Screenshot_20200729-153503](https://user-images.githubusercontent.com/52527906/88807175-acfe8780-d1b1-11ea-938d-7bc41b192149.png) | 
+### Authentication 
+Login | Signup | Registration | Forgot Password |
+------------ | ------------- | -------------- | -------------- |
+<img src="https://user-images.githubusercontent.com/52527906/157598217-28d852c2-ac26-4616-b16c-3f329f6b4091.png" alt="Login" height="400"/> | <img src="https://user-images.githubusercontent.com/52527906/157598397-41132628-d393-4c2a-817e-eaaba78b37cb.png" alt="Signup" height="400"/> | <img src="https://user-images.githubusercontent.com/52527906/157598435-31e64b96-d69b-4ef8-b970-f06fc85b496d.png" alt="Registration in progress" height="400"/> | <img src="https://user-images.githubusercontent.com/52527906/157599773-7739a98f-d0f7-4836-8b66-b95b121954bb.png" alt="Forgot Password" height="400"/> | 
 
 
-# Driver 
-Select Order | Deliver order | Navigate to Address |
------------- | ------------- | -------------- |
-![Screenshot_20200725-220036](https://user-images.githubusercontent.com/52527906/88805168-1d57d980-d1af-11ea-8fa6-a0e3bc150882.png) | ![Screenshot_20200725-220042](https://user-images.githubusercontent.com/52527906/88805142-15983500-d1af-11ea-9f81-df7f77d0e740.png) | ![Screenshot_20200729-153605](https://user-images.githubusercontent.com/52527906/88807152-a2dc8900-d1b1-11ea-84b4-74989a45e1f4.png) | 
+# Rest of the Application
+Home | View Product | Cart | Scan | Results
+------------ | ------------- | -------------- | -------------- | -------------- |
+<img src="https://user-images.githubusercontent.com/52527906/157599804-a9eb88a4-eb6c-4d14-8f55-12660a61196c.png" alt="Home" height="400"/> | <img src="https://user-images.githubusercontent.com/52527906/157599844-0f56ca51-5d3e-4651-9ad3-1d7760db08ae.png" alt="View Product" height="400"/> | <img src="https://user-images.githubusercontent.com/52527906/157599876-eccf1f66-4e15-463a-ade7-81ba3a26f2bf.png" alt="Cart" height="400"/> | <img src="https://user-images.githubusercontent.com/52527906/157599900-faa3e719-fd92-4d94-a078-d043ba98e9d9.png" alt="Scan Face" height="400"/> | <img src="https://user-images.githubusercontent.com/52527906/157599932-043f86a5-2db5-4804-a16a-195df05caf39.png" alt="Results" height="400"/> |
+
